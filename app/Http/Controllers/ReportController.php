@@ -52,11 +52,23 @@ class ReportController extends Controller
 
     public function stock_summary(Request $request)
     {
-        $q = Item::where('rem_qty', '>', 0);
+        //$q = Item::where('rem_qty', '>', 0);
+        $q = Item::selectRaw('product_name, unit_cost, rem_qty, sale_price, SUM(qty) as qty, SUM(rem_qty) as rem_qty')
+        // ('product_name','unit_cost','rem_qty','sale_price',
+        //             Item::raw('sum(qty) qty'))
+                    ->where('rem_qty', '>', 0)
+                    ->groupBy('product_code')
+                    ->orderBy('rem_qty', 'desc');
+
         if($request->has('from') && $request->has('to')) {
             $q = $q->whereBetween('created_at', [$request->from, $request->to]);
         }
+        //$q = $q->groupBy('product_code');
+    //    $items = $q->toSql();
+    //    echo $items;
+        // $q = $q->groupBy('product_name');
         $items = $q->get();
+        
         return response()->json(['success' => true, 'items' => $items]);
     }
 
