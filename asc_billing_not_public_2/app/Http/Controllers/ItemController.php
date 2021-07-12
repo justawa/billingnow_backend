@@ -126,16 +126,16 @@ class ItemController extends Controller
         if($request->has('from') && $request->has('to')) {
             $itemsWithCount = DB::table('items')
                 ->leftjoin('item_sale', 'items.id', '=', 'item_sale.item_id')
-                ->selectRaw('items.id, items.product_name, count(item_sale.item_id) as count')
+                ->selectRaw('items.id, items.product_name, items.rem_qty, count(item_sale.item_id) as count')
                 ->whereBetween('item_sale.created_at', [$request->from, $request->to])
-                ->groupBy('items.product_name', 'items.id')
+                ->groupBy('items.product_name', 'items.id', 'items.rem_qty')
                 ->orderBy('count', 'desc')
                 ->get();
         } else {
             $itemsWithCount = DB::table('items')
                 ->leftjoin('item_sale', 'items.id', '=', 'item_sale.item_id')
-                ->selectRaw('items.id, items.product_name, count(item_sale.item_id) as count')
-                ->groupBy('items.product_name', 'items.id')
+                ->selectRaw('items.id, items.product_name, items.rem_qty, count(item_sale.item_id) as count')
+                ->groupBy('items.product_name', 'items.id', 'items.rem_qty')
                 ->orderBy('count', 'desc')
                 ->get();
         }
