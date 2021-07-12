@@ -21,7 +21,7 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-require '/var/www/html/justconsult/asc_billing_not_public_2/vendor/autoload.php';
+require '../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ require '/var/www/html/justconsult/asc_billing_not_public_2/vendor/autoload.php'
 |
 */
 
-$app = require_once '/var/www/html/justconsult/asc_billing_not_public_2/bootstrap/app.php';
+$app = require_once '../bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
